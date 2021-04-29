@@ -13,9 +13,12 @@ public class AppMain {
         };
         StudentDb studentDb = new StudentDb(students);
 
-        for(int i=0; i < 5; i++){
-            System.out.println(studentDb.randomStudent());
-        }
+        studentDb.add(new Student("Hildegard", "483"));
+
+        System.out.println(studentDb.list());
+        System.out.println(studentDb.randomStudent());
+
+
 
     }
 

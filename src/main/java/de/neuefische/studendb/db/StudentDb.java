@@ -2,71 +2,60 @@ package de.neuefische.studendb.db;
 
 import de.neuefische.studendb.model.Student;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class StudentDb {
 
-    private Student[] students;
+    //private Student[] students;
+    private ArrayList<Student> studentList = new ArrayList<>();
 
-    public StudentDb(Student[] students) {
-        this.students = students;
+    public StudentDb(ArrayList<Student> students) {
+        this.studentList = students;
     }
 
-    public Student[] list() {
-        return students;
+    public StudentDb(Student[] students) {
+        for (int i = 0; i < students.length; i++) {
+            this.studentList.add(students[i]);
+        }
+    }
+
+    public ArrayList<Student> list() {
+        return studentList;
     }
 
     @Override
     public String toString(){
         String result = "";
-        for (int i = 0; i < students.length; i++) {
-            result += students[i] + "\n";
+        for (int i = 0; i < studentList.size(); i++) {
+            result += studentList.get(i) + "\n";
         }
         return result;
     }
 
     public Student randomStudent() {
-        int index = (int) Math.floor(Math.random() * students.length);
-        return students[index];
+        int index = (int) Math.floor(Math.random() * studentList.size());
+        return studentList.get(index);
     }
 
     public void add(Student student) {
-        Student[] updatedStudents = new Student[students.length+1];
-
-        for (int i = 0; i < students.length; i++) {
-            updatedStudents[i] = students[i];
-        }
-
-        updatedStudents[updatedStudents.length-1] = student;
-
-        students = updatedStudents;
+        studentList.add(student);
     }
 
     public void remove(Student student) {
-        int foundIndex = findIndex(student);
-        if(foundIndex < 0){
-            return;
-        }
-        Student[] updatedStudents = new Student[students.length-1];
-
-        for (int i = 0; i < students.length; i++) {
-            if(i < foundIndex){
-                updatedStudents[i] = students[i];
-            }
-            if(i > foundIndex){
-                updatedStudents[i-1] = students[i];
-            }
-        }
-
-        students = updatedStudents;
+        studentList.remove(student);
     }
 
-    private int findIndex(Student student) {
-        for (int i = 0; i < students.length; i++) {
-            if(students[i].equals(student)){
-                return i;
-            }
-        }
-        return -1;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentDb studentDb = (StudentDb) o;
+        return Objects.equals(studentList, studentDb.studentList);
     }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentList);
+    }
 }
